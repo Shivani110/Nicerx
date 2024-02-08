@@ -17,6 +17,34 @@ class AuthController extends Controller
         return view('auth.admin-login');
     }
 
+    public function register(){
+        return view('auth.register');
+    }
+
+    public function authregister(Request $request){
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+
+        $password = Hash::make($request->password);
+
+        $user = User::where('email',$request->email)->first();
+
+        if(!$user){
+            $users = new User;
+            $users->name = $request->name;
+            $users->email = $request->email;
+            $users->password = $password;
+            $users->save();
+
+            return back()->with('success',"Registered successfully");
+        }else{
+            return back()->with('error','Username already exist');
+        }
+    }
+
     public function adminsignin(Request $request){
         $request->validate([
             'email' => 'required',
@@ -71,15 +99,20 @@ class AuthController extends Controller
 
             if($expiretime > $curt_time){
                 if(Auth::attempt(['email'=>$username,'password'=>$password])){
-                    $otp = Otp::where('user_id',Auth::user()->id)->delete();
-                    return redirect('/admin/index');
+                    if(Auth::user()->is_admin == 1){
+                        $otp = Otp::where('user_id',Auth::user()->id)->delete();
+                        return redirect('/admin/index');
+                    }else{
+                        return redirect('/');
+                    }
+                }else{
+                    return redirect('/');
                 }
             }else{
-                return redirect('/admin-login');
+                return redirect('/');
             }
-
         }else{
-            return redirect('/admin-login')->with("error",'Incorrect OTP');
+            return redirect('/')->with("error",'Incorrect OTP');
         }
     }
 
@@ -111,7 +144,6 @@ class AuthController extends Controller
                 $message = "success";
 
                 return response()->json($message);
-
             }
         }
     }
@@ -119,6 +151,6 @@ class AuthController extends Controller
     public function authlogout(){
         Auth::logout();
 
-        return redirect('/admin-login');
+        return redirect('/');
     }
 }

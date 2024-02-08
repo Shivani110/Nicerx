@@ -34,7 +34,7 @@
                     </div>
                     <div class="nk-sidebar-brand">
                         <a href="html/index.html" class="logo-link nk-sidebar-logo">
-                            <h3 class="logo-light text-light">Nicerx</h3>
+                            <h3 class="logo-light text-light">NiceRx</h3>
                         </a>
                     </div>
                 </div><!-- .nk-sidebar-element -->
@@ -57,7 +57,21 @@
                                         </li>
                                     </ul><!-- .nk-menu-sub -->
                                 </li>
-                            </ul><!-- .nk-menu -->
+                                <li class="nk-menu-item has-sub">
+                                    <a href="#" class="nk-menu-link nk-menu-toggle">
+                                        <span class="nk-menu-icon"><em class=""></em></span>
+                                        <span class="nk-menu-text">Users</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="{{ url('admin/users') }}" class="nk-menu-link"><span class="nk-menu-text">Users</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="{{ url('admin/addnewuser') }}" class="nk-menu-link"><span class="nk-menu-text">Add New User</span></a>
+                                        </li>
+                                    </ul><!-- .nk-menu-sub -->
+                                </li>
+                            </ul>
                         </div><!-- .nk-sidebar-menu -->
                     </div><!-- .nk-sidebar-content -->
                 </div><!-- .nk-sidebar-element -->

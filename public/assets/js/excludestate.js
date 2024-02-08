@@ -1,4 +1,4 @@
-function excludeState(){
+$(document).ready(function(){
     $('#myform').submit(function(e){
         e.preventDefault();
         var data={
@@ -23,4 +23,4 @@ function excludeState(){
             }
         });
     });
-};
+});

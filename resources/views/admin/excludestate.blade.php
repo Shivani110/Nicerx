@@ -8,11 +8,6 @@
             <div class="card-inner">
                 <h5 class="card-title">Exclude State</h5>
                 <br>
-                @if ($message = Session::get('success'))
-                    <div class="alert alert-success col-lg-6">
-                        <p>{{ $message }}</p>
-                    </div>
-                @endif
                 <form id="myform" method="post">
                     <div class="col-lg-8">
                         <div class="form-group">
@@ -40,7 +35,7 @@
                         </div>
                     </div>
                     <br>
-                    <input type="submit" name="submit" value="Save" onclick="excludeState()" class="btn btn-primary">
+                    <input type="submit" name="submit" value="Save" class="btn btn-primary">
                 </form>
             </div>
         </div>

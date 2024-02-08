@@ -35,4 +35,36 @@ class AdminController extends Controller
         
         return response()->json($excludeState);
     }
+
+    public function users(){
+        $users = User::all();
+
+        return view('admin.users',compact('users'));
+    }
+
+    public function addNew(){
+        return view('admin.addnewuser');
+    }
+
+    public function addnewUser(Request $request){
+        $request->validate([
+           'name' => 'required',
+           'email' => 'required',
+           'password' => 'required', 
+        ]);
+
+        $user = User::where('email',$request->email)->first();
+
+        if(!$user){
+            $users = new User;
+            $users->name = $request->name;
+            $users->email = $request->email;
+            $users->password = $request->password;
+            $users->save();
+
+            return back()->with('success','New User Added');
+        }else{
+            return back()->with('error','User Already exist');
+        }
+    }
 }

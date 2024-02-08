@@ -24,15 +24,15 @@
                 <div class="nk-content ">
                     <div class="nk-block nk-block-middle nk-auth-body wide-xs">
                         <div class="brand-logo pb-4 text-center">
-                            <a href="html/index.html" class="logo-link">
-                                <h4>Nicerx</h4>
+                            <a href="#" class="logo-link">
+                                <h4>NiceRx</h4>
                             </a>
                         </div>
                         <div class="card card-bordered">
                             <div class="card-inner card-inner-lg">
                                 <div class="nk-block-head" id="sign">
                                     <div class="nk-block-head-content">
-                                        <h4 class="nk-block-title">Sign-In</h4>
+                                        <h4 class="nk-block-title text-center">Sign-In</h4>
                                     </div>
                                 </div><!-- .nk-block-head -->
                                 <div id="login-form">    
@@ -61,6 +61,7 @@
                                             <button class="btn btn-lg btn-primary btn-block">Sign in</button>
                                         </div>
 
+                                        <div id="loading" style="display:none; width: 400px; height: 50px;font-family: Times New Roman, Times, serif; color:#595858; font-size:20px; text-align:center">Loading Please wait...</div>
                                         <div class="show_msg"></div>
                                         @if($message = Session::get('error'))
                                             <div class="error">
@@ -120,6 +121,7 @@
     <script>
         $(document).ready(function(){
             $('#myform').submit(function(e){
+                $('#loading').show();
                 localStorage.setItem("email",$('#email').val());
                 localStorage.setItem("password",$('#password').val());
                 e.preventDefault();
@@ -169,7 +171,7 @@
                 setTimeout(countdown,1000);
             }else{
                 $('#myTimer').html('');
-                $('.show_msg').html('<p>Code is expired.</p>');
+                $('.show_msg').html('<p>Otp is expired.</p>');
                 $('.rsndbtn').show();
             }
         }

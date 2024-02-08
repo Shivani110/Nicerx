@@ -14,7 +14,9 @@ use App\Http\Controllers\AdminController;
 |
 */
 
-Route::get('/admin-login',[AuthController::class,'adminlogin']);
+Route::get('/',[AuthController::class,'adminlogin']);
+Route::get('/auth-register',[AuthController::class,'register']);
+Route::post('/signup',[AuthController::class,'authregister']);
 Route::post('/adminsignin',[AuthController::class,'adminsignin']);
 Route::post('/verifylogin',[AuthController::class,'verifyOtp']);
 Route::post('/resend-otp',[AuthController::class,'resendotp']);
@@ -24,4 +26,7 @@ Route::middleware(['Auth'=>'admin'])->group(function(){
     Route::get('/admin/index',[AdminController::class,'index']);
     Route::get('/admin/excludestate',[AdminController::class,'excludestate']);
     Route::post('/admin/addexcludestate',[AdminController::class,'addexcluedstate']);
+    Route::get('/admin/users',[AdminController::class,'users']);
+    Route::get('/admin/addnewuser',[AdminController::class,'addNew']);
+    Route::post('/admin/createuser',[AdminController::class,'addnewUser']);
 });
