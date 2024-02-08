@@ -3,56 +3,36 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use App\Models\Otp;
-use App\Mail\OtpEmail;
-use Hash;
-use Mail;
+use App\Models\ExcludeState;
 
 class AdminController extends Controller
 {
-    public function adminlogin(){
-        return view('auth.admin-login');
+    public function index(){
+        return view('admin.index');
     }
 
-    public function adminsignin(Request $request){
-        $request->validate([
-            'email' => 'required',
-            'password' => 'required',
-        ]);
+    public function excludestate(){
+        $statearray = array("Alaska"=>"ak","Alabama"=>"al","Arkansas"=>"ar","Arizona"=>"az","California"=>"ca","Colorado"=>"co","Connecticut"=>"ct","District Of Columbia"=>"dc","Delaware"=>"de","Florida"=>"fl","Georgia"=>"ga","Hawaii"=>"hi","Iowa"=>"ia","Idaho"=>"id","Illinois"=>"il","Indiana"=>"in","Kansas"=>"ks","Kentucky"=>"ky","Louisiana"=>"la","Massachusetts"=>"ma","Maryland"=>"md","Maine"=>"me","Michigan"=>"mi","Minnesota"=>"mn","Missouri"=>"mo","Mississippi"=>"ms","Montana"=>"mt","North Carolina"=>"nc","North Dakota"=>"nd","Nebraska"=>"ne","New Hampshire"=>"nh","New Jersey"=>"nj","New Mexico"=>"nm","Nevada"=>"nv","New York"=>"ny","Ohio"=>"oh","Oklahoma"=>"ok","Oregon"=>"or","Pennsylvania"=>"pa","Rhode Island"=>"ri","South Carolina"=>"sc","South Dakota"=>"sd","Tennessee"=>"tn","Texas"=>"tx","Utah"=>"ut","Virginia"=>"va","Vermont"=>"vt","Washington"=>"wa","Wisconsin"=>"wi","West Virginia"=>"wv","Wyoming"=>"wy");
+        $excludeState = ExcludeState::where('status','=',1)->first();
+        return view('admin.excludestate',compact('excludeState','statearray'));
+    }
 
-        $users = User::where('email',$request->email)->first();
+    public function addexcluedstate(Request $request){
+        $state = json_encode($request->state);
 
-        if($users){
-            if(Auth::attempt()){
-                return $users->password;
-                // $otp = rand(100000,999999);
-                // $otps = new Otp;
-                // $otps->user_id = $users->id;
-                // $otps->otp = $otp;
-                // $otps->expires_at = now()->addMinutes(10);
-                // $otps->save();
+        $excludeState = ExcludeState::where('status','=','1')->first();
 
-                // $userS = User::where('email','=',$request->email)->first();
-                // $otpS = Otp::where('user_id','=',$userS->id)->first();
-
-                // $mailData = array(
-                //     $userS->name,
-                //     $userS->email,
-                //     $otpS->otp,
-                // );
-                // $mail = Mail::to($userS->email)->send(new OtpEmail($mailData));
-
-                // $message = "success";
-
-                return response()->json($message);
-            }else{
-                $message = "Incorrect Password";
-                return response()->json($message);
-            }
+        if(!empty($excludeState)){
+            $excludeState->state = $state;
+            $excludeState->update();
         }else{
-            $message = "Incorrect Username";
-            return response()->json($message);
+            $excludeState = new ExcludeState;
+            $excludeState->state = $state;
+            $excludeState->save();
         }
+        
+        return response()->json($excludeState);
     }
 }

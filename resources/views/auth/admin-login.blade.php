@@ -30,7 +30,7 @@
                         </div>
                         <div class="card card-bordered">
                             <div class="card-inner card-inner-lg">
-                                <div class="nk-block-head">
+                                <div class="nk-block-head" id="sign">
                                     <div class="nk-block-head-content">
                                         <h4 class="nk-block-title">Sign-In</h4>
                                     </div>
@@ -61,11 +61,17 @@
                                             <button class="btn btn-lg btn-primary btn-block">Sign in</button>
                                         </div>
 
-                                        <div id="show_msg"></div>
+                                        <div class="show_msg"></div>
+                                        @if($message = Session::get('error'))
+                                            <div class="error">
+                                            {{ $message }}
+                                            </div>
+                                        @endif
                                     </form>
                                 </div>
                                 <div id="otp-form" style="display:none">
-                                    <form class="form-validate is-alter">
+                                    <form action="{{ url('verifylogin') }}" class="form-validate is-alter" method="post">
+                                        @csrf
                                         <div class="form-group">
                                             <div class="form-label-group">
                                                 <label class="form-label" for="otp">Verification code</label>
@@ -74,12 +80,28 @@
                                                 <input autocomplete="off" type="number" class="form-control form-control-lg" required id="otp" name="otp">
                                             </div>
                                         </div>
+                                        <input type="hidden" id="username" name="username" value="">
+                                        <input type="hidden" id="pass" name="pass" value="">
                                         <div class="form-group">
-                                            <button class="btn btn-lg btn-primary btn-block">Verify</button>
+                                            <button type="submit" class="btn btn-lg btn-primary btn-block">Verify</button>
+                                        </div>
+                                        <div id="msg"></div>
+                                        <div id="myTimer"></div>
+                                        <div class="show_msg"></div> 
+                                        <div class="rsndbtn" style="display:none">
+                                            <button class="resend" type="button" onclick="resendOTP()">Resend OTP</button>
                                         </div>
                                     </form>
+                                    @if($message = Session::get('success'))
+                                        <div class="success">
+                                        {{ $message }}
+                                        </div>
+                                    @elseif($message = Session::get('error'))
+                                        <div class="error">
+                                        {{ $message }}
+                                        </div>
+                                    @endif
                                 </div>
-
                             </div><!-- .nk-block -->
                         </div>
                     </div><!-- .nk-split -->
@@ -98,6 +120,8 @@
     <script>
         $(document).ready(function(){
             $('#myform').submit(function(e){
+                localStorage.setItem("email",$('#email').val());
+                localStorage.setItem("password",$('#password').val());
                 e.preventDefault();
                 var data={
                     email: $('#email').val(),
@@ -110,17 +134,67 @@
                     data: data,
                     dataType: "JSON",
                     success: function(response){
+                        if(response == "success"){
+                            email = localStorage.getItem('email');
+                            password = localStorage.getItem('password');
+                            $('#sign').hide();
+                            $('#login-form').hide();
+                            $('#otp-form').show();
+                            $('#username').val(email);
+                            $('#pass').val(password);
+                            $('#msg').append('<p>Please check your gmail for verification code.</p>');
+                        }
+
                         if(response == "Incorrect Password"){
-                            $('#show_msg').html('<p>'+response+'</p>');
+                            $('.show_msg').html('<p>'+response+'</p>');
                         }
 
                         if(response == "Incorrect Username"){
-                            $('#show_msg').html('<p>'+response+'</p>');
+                            $('.show_msg').html('<p>'+response+'</p>');
                         }
                     }
                 });
             });
         });
+
+        var timer = 600;
+        function countdown(){
+            timer-- ;
+
+            if(timer > 0){
+                minutes = Math.floor(timer / 60) % 60;
+                sec = Math.floor(timer) % 60;
+                var time = '<p>Time left :'+minutes+':'+sec+'</p>';
+                $('#myTimer').html(time);
+                setTimeout(countdown,1000);
+            }else{
+                $('#myTimer').html('');
+                $('.show_msg').html('<p>Code is expired.</p>');
+                $('.rsndbtn').show();
+            }
+        }
+
+        countdown();
+
+        function resendOTP(){
+            var data={
+                username: $('#username').val(),
+                password: $('#pass').val(),
+                _token: "{{ csrf_token() }}",
+            }
+            $.ajax({
+                url: "{{ url('resend-otp') }}",
+                type: "POST",
+                data: data,
+                dataType: "JSON",
+                success: function(response){
+                    if(response == "success"){
+                        $('.show_msg').hide();
+                        $('.rsndbtn').hide();
+                    }
+                }
+            });
+        }
     </script>
 </body>
 </html>
