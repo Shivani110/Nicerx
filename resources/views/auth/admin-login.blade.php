@@ -7,6 +7,10 @@
     <meta name="author" content="Softnio">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers.">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="base-url" content="{{ url('adminsignin') }}">
+    <meta name="token" content="{{ csrf_token() }}">
+    <meta name="b-url" content="{{ url('resend-otp') }}">
     <!-- Page Title  -->
     <title>Login</title>
     <!-- StyleSheets  -->
@@ -86,9 +90,9 @@
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-lg btn-primary btn-block">Verify</button>
                                         </div>
-                                        <div id="msg"></div>
+                                        <div class="msg1"></div>
                                         <div id="myTimer"></div>
-                                        <div class="show_msg"></div> 
+                                        <div class="msg" style="display:none"><p>Please check your gmail for verification code.</p></div> 
                                         <div class="rsndbtn" style="display:none">
                                             <button class="resend" type="button" onclick="resendOTP()">Resend OTP</button>
                                         </div>
@@ -118,85 +122,6 @@
     <script src="{{ asset('/assets/assets/js/bundle.js?ver=3.1.2') }}"></script>
     <script src="{{ asset('/assets/assets/js/scripts.js?ver=3.1.2') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-        $(document).ready(function(){
-            $('#myform').submit(function(e){
-                $('#loading').show();
-                localStorage.setItem("email",$('#email').val());
-                localStorage.setItem("password",$('#password').val());
-                e.preventDefault();
-                var data={
-                    email: $('#email').val(),
-                    password: $('#password').val(),
-                    _token: "{{ csrf_token() }}",
-                }
-                $.ajax({
-                    url: "{{ url('adminsignin') }}",
-                    type: "post",
-                    data: data,
-                    dataType: "JSON",
-                    success: function(response){
-                        if(response == "success"){
-                            email = localStorage.getItem('email');
-                            password = localStorage.getItem('password');
-                            $('#sign').hide();
-                            $('#login-form').hide();
-                            $('#otp-form').show();
-                            $('#username').val(email);
-                            $('#pass').val(password);
-                            $('#msg').append('<p>Please check your gmail for verification code.</p>');
-                        }
-
-                        if(response == "Incorrect Password"){
-                            $('.show_msg').html('<p>'+response+'</p>');
-                        }
-
-                        if(response == "Incorrect Username"){
-                            $('.show_msg').html('<p>'+response+'</p>');
-                        }
-                    }
-                });
-            });
-        });
-
-        var timer = 600;
-        function countdown(){
-            timer-- ;
-
-            if(timer > 0){
-                minutes = Math.floor(timer / 60) % 60;
-                sec = Math.floor(timer) % 60;
-                var time = '<p>Time left :'+minutes+':'+sec+'</p>';
-                $('#myTimer').html(time);
-                setTimeout(countdown,1000);
-            }else{
-                $('#myTimer').html('');
-                $('.show_msg').html('<p>Otp is expired.</p>');
-                $('.rsndbtn').show();
-            }
-        }
-
-        countdown();
-
-        function resendOTP(){
-            var data={
-                username: $('#username').val(),
-                password: $('#pass').val(),
-                _token: "{{ csrf_token() }}",
-            }
-            $.ajax({
-                url: "{{ url('resend-otp') }}",
-                type: "POST",
-                data: data,
-                dataType: "JSON",
-                success: function(response){
-                    if(response == "success"){
-                        $('.show_msg').hide();
-                        $('.rsndbtn').hide();
-                    }
-                }
-            });
-        }
-    </script>
+    <script src="{{ asset('assets/js/login.js') }}"></script>
 </body>
 </html>

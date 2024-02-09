@@ -1,0 +1,3 @@
+$('#loose-weight').click(function(){
+    
+});

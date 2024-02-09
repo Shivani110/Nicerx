@@ -34,21 +34,39 @@
                                         <h4 class="nk-block-title text-center">Register</h4>
                                     </div>
                                 </div><!-- .nk-block-head -->
+                                @if ($message = Session::get('success'))
+                                    <div class="alert alert-success">
+                                        <p>{{ $message }}</p>
+                                    </div>
+                                @elseif($message = Session::get('error'))
+                                    <div class="alert alert-danger">
+                                        <p>{{ $message }}</p>
+                                    </div>
+                                @endif
                                 <form action="{{ url('signup') }}" method="post">
                                     @csrf
                                     <div class="form-group">
-                                        <label class="form-label" for="name">Name</label>
+                                        <label class="form-label" for="name">First Name</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" class="form-control form-control-lg" id="name" name="name" value="">
+                                            <input type="text" class="form-control form-control-lg" id="fname" name="fname" value="">
                                         </div>
-                                        @error('name')
+                                        @error('fname')
+                                        {{ $message }}
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="lname">Last Name</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control form-control-lg" id="lname" name="lname" value="">
+                                        </div>
+                                        @error('lname')
                                         {{ $message }}
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label" for="email">Email</label>
                                         <div class="form-control-wrap">
-                                            <input type="email" class="form-control form-control-lg" id="email" name="email" value="">
+                                            <input type="type" class="form-control form-control-lg" id="email" name="email" value="">
                                         </div>
                                         @error('email')
                                         {{ $message }}
@@ -68,17 +86,17 @@
                                         @enderror
                                     </div>
                                     <div class="form-group">
+                                        <label class="form-label" for="phone">Phone Number</label>
+                                        <div class="form-control-wrap">
+                                            <input type="number" class="form-control form-control-lg" id="phone" name="phone" value="">
+                                        </div>
+                                        @error('phone')
+                                        {{ $message }}
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
                                         <button class="btn btn-lg btn-primary btn-block">Register</button>
                                     </div> 
-                                    @if ($message = Session::get('success'))
-                                        <div class="alert alert-success">
-                                            <p>{{ $message }}</p>
-                                        </div>
-                                    @elseif($message = Session::get('error'))
-                                        <div class="alert alert-danger">
-                                            <p>{{ $message }}</p>
-                                        </div>
-                                    @endif
                                 </form>
                             </div>
                         </div>

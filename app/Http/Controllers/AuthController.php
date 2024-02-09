@@ -23,9 +23,11 @@ class AuthController extends Controller
 
     public function authregister(Request $request){
         $request->validate([
-            'name' => 'required',
-            'email' => 'required',
+            'fname' => 'required',
+            'lname' => 'required',
+            'email' => 'required|email',
             'password' => 'required',
+            'phone' => 'required'
         ]);
 
         $password = Hash::make($request->password);
@@ -34,12 +36,14 @@ class AuthController extends Controller
 
         if(!$user){
             $users = new User;
-            $users->name = $request->name;
+            $users->firstname = $request->fname;
+            $users->lastname = $request->lname;
             $users->email = $request->email;
             $users->password = $password;
+            $users->phonenumber = $request->phone;
             $users->save();
 
-            return back()->with('success',"Registered successfully");
+            return back()->with('success','Registered successfully');
         }else{
             return back()->with('error','Username already exist');
         }
@@ -103,16 +107,17 @@ class AuthController extends Controller
                         $otp = Otp::where('user_id',Auth::user()->id)->delete();
                         return redirect('/admin/index');
                     }else{
-                        return redirect('/');
+                        $otp = Otp::where('user_id',Auth::user()->id)->delete();
+                        return redirect('/admin-login');
                     }
                 }else{
-                    return redirect('/');
+                    return redirect('/admin-login');
                 }
             }else{
-                return redirect('/');
+                return redirect('/admin-login');
             }
         }else{
-            return redirect('/')->with("error",'Incorrect OTP');
+            return redirect('/admin-login')->with("error",'Incorrect OTP');
         }
     }
 
@@ -151,6 +156,6 @@ class AuthController extends Controller
     public function authlogout(){
         Auth::logout();
 
-        return redirect('/');
+        return redirect('/admin-login');
     }
 }

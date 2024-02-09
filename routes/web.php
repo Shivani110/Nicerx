@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\FrontController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,7 +16,8 @@ use App\Http\Controllers\AdminController;
 |
 */
 
-Route::get('/',[AuthController::class,'adminlogin']);
+Route::get('/',[FrontController::class,'home']);
+Route::get('/admin-login',[AuthController::class,'adminlogin']);
 Route::get('/auth-register',[AuthController::class,'register']);
 Route::post('/signup',[AuthController::class,'authregister']);
 Route::post('/adminsignin',[AuthController::class,'adminsignin']);
@@ -29,4 +32,7 @@ Route::middleware(['Auth'=>'admin'])->group(function(){
     Route::get('/admin/users',[AdminController::class,'users']);
     Route::get('/admin/addnewuser',[AdminController::class,'addNew']);
     Route::post('/admin/createuser',[AdminController::class,'addnewUser']);
+    Route::get('/admin/addnewuser/{id}',[AdminController::class,'editnewuser']);
+    Route::post('/admin/updatenewuser',[AdminController::class,'updateNewUser']);
+    Route::post('/admin/deleteuser',[AdminController::class,'deleteUser']);
 });

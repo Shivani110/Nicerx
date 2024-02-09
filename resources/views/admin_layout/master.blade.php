@@ -9,8 +9,10 @@
     <meta name="description" content="A powerful and conceptual apps base dashboard template that especially build for developers and programmers.">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="base-url" content="{{ url('admin/addexcludestate') }}">
+    <meta name="token" content="{{ csrf_token() }}">
+    <meta name="b-url" content="{{ url('admin/deleteuser') }}">
     <!-- Fav Icon  -->
-    <link rel="shortcut icon" href="./images/favicon.png">
+    <link rel="shortcut icon" href="">
     <!-- Page Title  -->
     <title> Admin Dashboard</title>
     <!-- StyleSheets  -->
@@ -88,8 +90,8 @@
                             </div>
                             <div class="nk-header-brand d-xl-none">
                                 <a href="html/index.html" class="logo-link">
-                                <img class="logo-light logo-img" src="{{ asset('assets/images/logo.png') }}" srcset="{{ asset('assets/images/logo2x.png 2x') }}" alt="logo">
-                                    <img class="logo-dark logo-img" src="{{ asset('assets/images/logo-dark.png') }}" srcset="{{ asset('assets/images/logo-dark2x.png 2x') }}" alt="logo-dark">
+                                <img class="logo-light logo-img" src="" srcset="" alt="logo">
+                                    <img class="logo-dark logo-img" src="" srcset="" alt="logo-dark">
                                 </a>
                             </div><!-- .nk-header-brand -->
                             <div class="nk-header-news d-none d-xl-block">
@@ -163,6 +165,7 @@
     <script src="{{ asset('/assets/assets/js/libs/datatable-btns.js?ver=3.1.2')}}"></script>
       
     <script src="{{ asset('assets/js/excludestate.js') }}"></script>
+    <script src="{{ asset('assets/js/deleteuser.js') }}"></script>
 </body>
 
 </html>
