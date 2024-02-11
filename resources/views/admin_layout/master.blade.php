@@ -73,6 +73,17 @@
                                         </li>
                                     </ul><!-- .nk-menu-sub -->
                                 </li>
+                                <li class="nk-menu-item has-sub">
+                                    <a href="#" class="nk-menu-link nk-menu-toggle">
+                                        <span class="nk-menu-icon"><em class=""></em></span>
+                                        <span class="nk-menu-text">Account Setting</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="{{ url('admin/changepassword') }}" class="nk-menu-link"><span class="nk-menu-text">Change Password</span></a>
+                                        </li>
+                                    </ul><!-- .nk-menu-sub -->
+                                </li>
                             </ul>
                         </div><!-- .nk-sidebar-menu -->
                     </div><!-- .nk-sidebar-content -->

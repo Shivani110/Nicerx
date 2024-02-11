@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\ExcludeState;
+use Hash;
 
 class AdminController extends Controller
 {
@@ -83,6 +84,7 @@ class AdminController extends Controller
         $users = User::where('id','=',$id)->first();
         $users->firstname = $request->fname;
         $users->lastname = $request->lname;
+        $users->email = $request->email;
         $users->phonenumber = $request->phone;
         $users->update();
 
@@ -93,5 +95,32 @@ class AdminController extends Controller
         $user = User::where('id','=',$request->id)->delete();
 
         return response()->json($user);
+    }
+
+    public function changePassword(){
+        return view('admin.changepassword');
+    }
+
+    public function password(Request $request){
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required',
+            'confirm_password' => 'required',
+        ]);
+
+        if(Hash::check($request->old_password, Auth()->user()->password)){
+            if($request->new_password == $request->confirm_password){
+                $password = Hash::make($request->new_password);
+                $user = User::where('id','=',Auth::user()->id)->first();
+                $user->password = $password;
+                $user->update();
+
+                return back()->with('success','Your password changed successfully');
+            }else{
+                return back()->with('error','Confirm password not matched !!');
+            }
+        }else{
+            return back()->with('error','Old password not matched !!');
+        }
     }
 }

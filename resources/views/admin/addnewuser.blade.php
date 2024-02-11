@@ -57,6 +57,9 @@
                             {{ $message }}
                             @enderror
                         </div>
+                        @if($user ?? '')
+                            
+                        @else
                         <div class="form-group">
                             <label class="form-label" for="password">Password</label>
                             <div class="form-control-wrap">
@@ -64,12 +67,13 @@
                                     <em class="passcode-icon icon-show icon ni ni-eye"></em>
                                     <em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
                                 </a>
-                                <input type="password" class="form-control form-control-lg" id="password" name="password" value="{{ $user->password ?? '' }}">
+                                <input type="password" class="form-control form-control-lg" id="password" name="password" value="">
                             </div>
                             @error('password')
                             {{ $message }}
                             @enderror
                         </div>
+                        @endif
                         <div class="form-group">
                             <label class="form-label" for="phone">Phone number</label>
                             <div class="form-control-wrap">
