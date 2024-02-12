@@ -57,9 +57,6 @@
                             {{ $message }}
                             @enderror
                         </div>
-                        @if($user ?? '')
-                        
-                        @else
                         <div class="form-group">
                             <label class="form-label" for="password">Password</label>
                             <div class="form-control-wrap">
@@ -73,7 +70,6 @@
                             {{ $message }}
                             @enderror
                         </div>
-                        @endif
                         <div class="form-group">
                             <label class="form-label" for="phone">Phone number</label>
                             <div class="form-control-wrap">
