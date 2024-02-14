@@ -384,3 +384,10 @@ ul.btn-box li span {
 .quiz-welcome-step .prev-arrow i {
     font-size: 16px;
 }
+
+.other {
+    border: 1px solid #555;
+    padding: 4px 8px;
+    border-radius: 8px;
+    width: 100%;
+}

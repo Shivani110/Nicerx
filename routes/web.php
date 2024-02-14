@@ -17,6 +17,7 @@ use App\Http\Controllers\FrontController;
 */
 
 Route::get('/',[FrontController::class,'home']);
+Route::post('/checkstate',[FrontController::class,'checkState']);
 Route::get('/admin-login',[AuthController::class,'adminlogin']);
 Route::get('/auth-register',[AuthController::class,'register']);
 Route::post('/signup',[AuthController::class,'authregister']);
